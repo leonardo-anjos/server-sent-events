@@ -9,7 +9,7 @@ services:
       - .:/home/node/app
 
   mysql:
-    image: mysql:8.0.30-debian
+    image: mysql:latest
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: nest
