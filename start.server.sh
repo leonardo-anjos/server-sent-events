@@ -1,10 +1,11 @@
 #!/bin/bash
 
-echo "stop container, remove image, volume and network to server-send-events"
-docker-compose down
+# echo "stop container, remove image, volume and network to server-send-events"
+# docker-compose down
 
-docker rmi server-sent-events_app:latest
-docker rmi mysq:latest
+# docker rmi server-sent-events_app:latest
+# docker rmi mysq:latest
+# docker rmi redis:latest
 
 echo "up docker-compose"
 docker-compose up
