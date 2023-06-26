@@ -1,5 +1,16 @@
-import { Controller, Get, MessageEvent, Param, ParseIntPipe, Post, Sse } from '@nestjs/common';
-import { Observable, defer, map, repeat } from 'rxjs';
+import {
+  Controller,
+  Get,
+  MessageEvent,
+  Param,
+  ParseIntPipe,
+  Post,
+  Res,
+  Sse,
+} from '@nestjs/common';
+import { Status } from '@prisma/client';
+import { Response } from 'express';
+import { Observable, defer, map, repeat, tap } from 'rxjs';
 import { ReportsService } from './reports.service';
 
 @Controller('reports')
@@ -22,10 +33,20 @@ export class ReportsController {
   }
 
   @Sse(':id/events')
-  events(@Param('id', new ParseIntPipe()) id: number): Observable<MessageEvent> {
+  events(
+    @Param('id', new ParseIntPipe()) id: number,
+    @Res() response: Response,
+  ): Observable<MessageEvent> {
     return defer(() => this.reportService.findOne(id)).pipe(
       repeat({
         delay: 1000,
+      }),
+      tap((report) => {
+        if (report.status === Status.DONE || report.status === Status.ERROR) {
+          setTimeout(() => {
+            response.end();
+          }, 10000);
+        }
       }),
       map((report) => ({
         type: 'message',
