@@ -34,13 +34,13 @@ export class ReportsService {
         status: Status.PENDING,
       },
     });
-    this.reportsQueue.add('reports', { reportId: report.id });
+    await this.reportsQueue.add({ reportId: report.id });
     return report;
   }
 
   async produce(reportId: number) {
     await sleep(Math.random() * 10000);
-    this.prismaService.report.update({
+    await this.prismaService.report.update({
       where: {
         id: reportId,
       },
@@ -52,7 +52,7 @@ export class ReportsService {
     await sleep(Math.random() * 10000);
     const randomStatus = Math.random() > 0.5 ? Status.DONE : Status.ERROR;
 
-    this.prismaService.report.update({
+    await this.prismaService.report.update({
       where: {
         id: reportId,
       },
