@@ -1,5 +1,9 @@
 GET http://localhost:3000/reports
 
 
+###
+GET http://localhost:3000/reports/1
+
+
 ### 
 POST http://localhost:3000/reports
