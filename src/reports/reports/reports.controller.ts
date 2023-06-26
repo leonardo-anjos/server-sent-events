@@ -5,6 +5,7 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Render,
   Res,
   Sse,
 } from '@nestjs/common';
@@ -16,6 +17,13 @@ import { ReportsService } from './reports.service';
 @Controller('reports')
 export class ReportsController {
   constructor(private reportService: ReportsService) {}
+
+  @Get('view')
+  @Render('reports')
+  async view() {
+    const reports = await this.reportService.all();
+    return { reports };
+  }
 
   @Get()
   all() {
